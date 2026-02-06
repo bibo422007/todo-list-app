@@ -1,16 +1,20 @@
-mylist=[];
+ const mylist=JSON.parse(localStorage.getItem('mylist'))||[];
+document.querySelector('.add').addEventListener('click',()=>{addtodo()});
 function rendertodo()
 {
   let htmlelement='';
-  for(let i=0;i<mylist.length;i++)
-  {
-    const todo=mylist[i];
+  mylist.forEach((todo,index)=>{
     const{name,date}=todo;
-    const html=`<div>${name}</div><div>${date}</div><button class="js-delete" onclick="mylist.splice(${i},1);
-             rendertodo();">Delete</button>`;
+    const html=`<div>${name}</div><div>${date}</div><button class="js-delete">Delete</button>`;
     htmlelement+=html;
-  }
-  document.querySelector('.js-tasks').innerHTML=htmlelement;
+  });
+  document.querySelector('.js-tasks').innerHTML=htmlelement; //after  this because the above is just a string this is where html is added on page
+  document.querySelectorAll('.js-delete').forEach
+  ((deletevalue,index)=>{
+    deletevalue.addEventListener('click',()=>{mylist.splice(index,1);
+    rendertodo();
+    savestorage();})
+  })
 }
 function addtodo()
 {
@@ -24,4 +28,9 @@ function addtodo()
   rendertodo();
   val.value='';
   val2.value='';
+  savestorage();
+}
+function savestorage()
+{
+  localStorage.setItem('mylist',JSON.stringify(mylist));
 }
